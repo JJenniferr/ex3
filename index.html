@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="js/pixi.min.js"></script>
+    <script>
+		var app = new PIXI.Application(500,350);
+        document.body.appendChild(app.view);
+        var bg = new PIXI.Sprite.fromImage("res/bg.png");
+        app.stage.addChild(bg);
+		
+		var hand = new PIXI.Sprite.fromImage("res/hand01.png");
+		hand.anchor.set(0.5,0.5);
+		hand.x = 200;
+		hand.y = 200;
+		app.stage.addChild(hand);
+
+		
+		//给bg背图片添加鼠标事件，实现hand的鼠标跟随
+		bg.interactive = true;
+		bg.on("mousemove", moveHand);
+		function moveHand(event) {
+		    var pos = event.data.getLocalPosition(app.stage);
+		    hand.x = pos.x;
+		    hand.y = pos.y;
+		}
+		bg.interactive = true;
+		//bg图片当被点击时，通知执行 change 函数
+		bg.on("click",change);
+		
+		var pic1 = new PIXI.Sprite.fromImage("res/pic1.png");
+		app.stage.addChild(pic1);
+		pic1.visible=false;
+		
+		function change() {
+		    bg.visible=false;
+			pic1.visible=true;
+			
+			
+			pic1.interactive = true;
+			pic1.on("mousemove", moveHand);
+			function moveHand(event) {
+			    var pos = event.data.getLocalPosition(app.stage);
+			    hand.x = pos.x;
+			    hand.y = pos.y;
+			}
+			pic1.interactive = true;
+			//pic1图片当被点击时，通知执行 change 函数
+			pic1.on("click",change);
+			
+			function change() {
+			    pic1.visible=false;
+				bg.visible=true;
+				
+			}
+			
+		}
+		
+    </script>
+</body>
+</html>
